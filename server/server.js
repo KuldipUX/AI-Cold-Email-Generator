@@ -16,8 +16,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+// app.use(cors({
+//     origin: process.env.FRONTEND_URL , // frontend URL from .env
+//     credentials: true
+// }));
+const frontendUrl = process.env.FRONTEND_URL?.replace(/\/$/, ''); // remove trailing slash if any
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL , // frontend URL from .env
+    origin: function(origin, callback) {
+        if (!origin) return callback(null, true); // allow server-to-server requests
+        if (origin.replace(/\/$/, '') === frontendUrl) { // compare without trailing slash
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());
