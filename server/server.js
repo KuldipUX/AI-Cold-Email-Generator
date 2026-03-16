@@ -15,12 +15,11 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-Middlewareapp.use(cors({
-    origin: process.env.FRONTEND_URL, // frontend URL from .env
+// Middleware
+app.use(cors({
+    origin: process.env.FRONTEND_URL , // frontend URL from .env
     credentials: true
 }));
-
-//app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
